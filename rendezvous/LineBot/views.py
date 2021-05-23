@@ -6,11 +6,12 @@ from django.conf import settings
 from linebot import LineBotApi, WebhookParser
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
 from linebot.models import MessageEvent, TextSendMessage
+
+from linebot.models import ImagemapSendMessage, BaseSize, URIImagemapAction, MessageImagemapAction, ImagemapArea
     
 line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
 parser = WebhookParser(settings.LINE_CHANNEL_SECRET)
-    
-    
+
 @csrf_exempt
 def callback(request):
     
@@ -26,6 +27,7 @@ def callback(request):
             return HttpResponseBadRequest()
     
         for event in events:
+            print(event)
             if isinstance(event, MessageEvent):
                 line_bot_api.reply_message(
                     event.reply_token,

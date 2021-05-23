@@ -18,5 +18,5 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('foodlinebot/', include('LineBot.urls')) #包含應用程式的網址
+    path('LineBot/', include('LineBot.urls'))
 ]
