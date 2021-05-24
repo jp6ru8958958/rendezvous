@@ -16,3 +16,4 @@ class location(models.Model):
 class user(models.Model):
     line_user_id = models.CharField(max_length=40)
     real_name = models.CharField(max_length=40)
+    operation_status = models.CharField(max_length=20, default='Normal')
