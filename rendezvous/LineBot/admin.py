@@ -1,7 +1,8 @@
 from django.contrib import admin
-from .models import reservation, location, user
+from .models import Reservation, Location, User, Message
 
 
-admin.site.register(reservation)
-admin.site.register(location)
-admin.site.register(user)
+admin.site.register(Reservation)
+admin.site.register(Location)
+admin.site.register(User)
+admin.site.register(Message)
