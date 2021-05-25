@@ -44,7 +44,7 @@ def callback(request):
                     user.update(real_name=event.message.text, operation_status='None')
                     line_bot_api.reply_message(
                         event.reply_token,
-                        TextSendMessage(text='新名稱設定完成,\nHi, {}!'.format(event.message.text))
+                        TextSendMessage(text='新名稱設定完成\nHi, {}!'.format(event.message.text))
                     )
                 elif user_status == 'ChoosingReservationLocation':
                     print('還沒做')
@@ -58,7 +58,7 @@ def callback(request):
                         TemplateSendMessage(
                             alt_text='預約',
                             template=ButtonsTemplate(
-                                title='您是想要...?',
+                                title='您今天想...?',
                                 text='選擇一個功能：',
                                 actions=[                              
                                     MessageTemplateAction(
@@ -83,13 +83,46 @@ def callback(request):
                     print('還沒做')
                 elif event.message.text == '取消預約':
                     print('還沒做')
-                elif event.message.text == '名稱設定':
+                elif event.message.text == '設定':
+                    line_bot_api.reply_message(
+                        event.reply_token,
+                        TemplateSendMessage(
+                            alt_text='個人資料',
+                            template=ButtonsTemplate(
+                                title='嗨! {}'.format(user[0].real_name),
+                                text='您今天想...?',
+                                actions=[                              
+                                    MessageTemplateAction(
+                                        label='修改使用者名稱',
+                                        text='修改使用者名稱'
+                                    ),
+                                    MessageTemplateAction(
+                                        label='回報問題',
+                                        text='回報問題'
+                                    ),
+                                    MessageTemplateAction(
+                                        label='查看開發團隊',
+                                        text='查看開發團隊'
+                                    ) 
+                                ]
+                            )
+                        )
+                    )
+                elif event.message.text == '修改使用者名稱':
                     user.update(operation_status='ChangingUserName')
                     line_bot_api.reply_message(
                         event.reply_token,
-                        TextSendMessage(text='請告訴我您想改成什麼名字'.format(event.message.text))
+                        TextSendMessage(text='請告訴我您想改成什麼名稱'.format(event.message.text))
                     )
                 elif event.message.text == '最新消息':
+                    msg = Message.objects.filter().order_by('created_at').reverse().first()
+                    line_bot_api.reply_message(
+                        event.reply_token,
+                        TextSendMessage(text=msg.content)
+                    )
+                elif event.message.text == '回報問題':
+                    print(還沒做)
+                elif event.message.text == '查看開發團隊':
                     msg = Message.objects.filter().order_by('created_at').first()
                     line_bot_api.reply_message(
                         event.reply_token,
