@@ -22,3 +22,8 @@ class Message(models.Model):
     author = models.CharField(max_length=40)
     content = models.TextField(null=False)
     created_at = models.DateTimeField(auto_now_add=True)
+
+class Report(models.Model):
+    author = models.CharField(max_length=40)
+    content = models.TextField(null=False)
+    created_at = models.DateTimeField(auto_now_add=True)

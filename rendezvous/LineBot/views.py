@@ -7,7 +7,7 @@ from linebot import LineBotApi, WebhookParser
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
 from linebot.models import MessageEvent, TextSendMessage, StickerSendMessage, LocationMessage, ButtonsTemplate, ConfirmTemplate, TemplateSendMessage, MessageTemplateAction
 
-from LineBot.models import Reservation, Location, User, Message
+from LineBot.models import Reservation, Location, User, Message, Report
 
 line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
 parser = WebhookParser(settings.LINE_CHANNEL_SECRET)
@@ -40,16 +40,31 @@ def callback(request):
                 
                 # Continue unfinished operations.
                 user_status = user[0].operation_status
-                if user_status == 'ChangingUserName':
-                    user.update(real_name=event.message.text, operation_status='None')
-                    line_bot_api.reply_message(
-                        event.reply_token,
-                        TextSendMessage(text='新名稱設定完成\nHi, {}!'.format(event.message.text))
-                    )
-                elif user_status == 'ChoosingReservationLocation':
-                    print('還沒做')
-                elif user_status == 'ChoosingTimePeriod':
-                    print('還沒做')
+                if not user_status == 'None':
+                    if user_status == 'ChangingUserName':
+                        user.update(real_name=event.message.text, operation_status='None')
+                        line_bot_api.reply_message(
+                            event.reply_token,
+                            TextSendMessage(text='新名稱設定完成\nHi, {}!'.format(event.message.text))
+                        )
+                    elif user_status == 'ChoosingReservationLocation':
+                        print('輸出可預約時間')
+                        user.update(operation_status='ChoosingTimePeriod')
+                        print('接收可預約時間')
+                    elif user_status == 'ChoosingTimePeriod':
+                        print('建立預約')
+                        print('回覆預約資訊')
+                        user.update(operation_status='None')
+                    elif user_status == 'ChoosingCancelReservation':
+                        print('刪除所選預約')
+                        user.update(operation_status='None')
+                    elif user_status == 'ReportProblem':
+                        Report.objects.create(author=user[0].real_name, ocntent=event.message.text)
+                        user.update(operation_status='None')
+                        line_bot_api.reply_message(
+                            event.reply_token,
+                            TextSendMessage(text='感謝，已收到您的回報 !')
+                        )
 
                 # Commands on richmenu.
                 if event.message.text == '預約':
@@ -78,16 +93,18 @@ def callback(request):
                         )
                     )
                 if event.message.text == '建立新的預約':
-                    print('還沒做')
+                    print('顯示時間表')
+                    user.update(operation_status='ChoosingReservationLocation')
                 elif event.message.text == '查看現有的預約':
-                    print('還沒做')
+                    print('顯示現有預約, 不須提供button功能')
                 elif event.message.text == '取消預約':
-                    print('還沒做')
+                    print('顯示現有預約')
+                    user.update(operation_status='ChoosingCancelReservation')
                 elif event.message.text == '設定':
                     line_bot_api.reply_message(
                         event.reply_token,
                         TemplateSendMessage(
-                            alt_text='個人資料',
+                            alt_text='設定',
                             template=ButtonsTemplate(
                                 title='嗨! {}'.format(user[0].real_name),
                                 text='您今天想...?',
@@ -121,7 +138,11 @@ def callback(request):
                         TextSendMessage(text=msg.content)
                     )
                 elif event.message.text == '回報問題':
-                    print(還沒做)
+                    user.update(operation_status='ReportProblem')
+                    line_bot_api.reply_message(
+                        event.reply_token,
+                        TextSendMessage(text='遇到了什麼問題嗎?\n麻煩跟我說')
+                    )
                 elif event.message.text == '查看開發團隊':
                     msg = Message.objects.filter().order_by('created_at').first()
                     line_bot_api.reply_message(
@@ -133,16 +154,3 @@ def callback(request):
         return HttpResponse()
     else:
         return HttpResponseBadRequest()
-'''
-{
-"message": {
-    "id": "14106814847816", "text": "\u6e2c", "type": "text"
-    }, 
-"mode": "active", 
-"replyToken": "6ba474fc231f445482d26d17d2dc9525", 
-"source": {
-    "type": "user", "userId": "U5bc226fa6aea7f7243b5832df7bd5187"
-    }, 
-"timestamp": 1621860612220, "type": "message"
-}
-'''
