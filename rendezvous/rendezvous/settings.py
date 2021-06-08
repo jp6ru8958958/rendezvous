@@ -30,7 +30,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     '127.0.0.1',
     '5e932948af57.ngrok.io'
-    'rendezvous.herokuapp.com'
+    'rendezvouslinebot.herokuapp.com'
 ]
 
 # Application definition
