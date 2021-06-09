@@ -1,5 +1,5 @@
 venv/
-rendezvous/rendezvou/settings.py
+rendezvous/rendezvous/settings.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
