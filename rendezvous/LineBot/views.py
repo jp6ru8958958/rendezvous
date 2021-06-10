@@ -9,8 +9,6 @@ from linebot import LineBotApi, WebhookParser
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
 from linebot.models import *
 
-import time
-
 line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
 parser = WebhookParser(settings.LINE_CHANNEL_SECRET)
 
@@ -119,7 +117,7 @@ def callback(request):
                             CarouselColumn(
                                 thumbnail_image_url='https://obs.line-scdn.net/0hH5cxhBnQFxpeAQHV8I9oTX9cHHhtYwkRfGdfeHwASS1xN1IiMGQNfy9VSnkjOQdNNTJffxUBQXgjNFZLZyJZKS8EG3ohOQ/f256x256',
                                 title='預約資訊',
-                                text='地點：{}\n預約時間：{}'.format(reservation.location, reservation.reservation_time.strftime('%Y-%m-%d %H:%M', time.localtime())),
+                                text='地點：{}\n預約時間：{}'.format(reservation.location, reservation.reservation_time.astimezone('Asia/Taipei').strftime('%Y-%m-%d %H:%M')),
                                 actions=[
                                     URITemplateAction(
                                         label='官方網站',
@@ -247,7 +245,7 @@ def callback(request):
                             for person in reservation_people:
                                 if person.location == location.name:
                                     how_many_people += 1
-                                    reply_text += '\t{} - {}\n'.format(User.objects.get(line_user_id=person.line_user_id).real_name, person.reservation_time.strftime('%H:%M'))
+                                    reply_text += '\t{} - {}\n'.format(User.objects.get(line_user_id=person.line_user_id).real_name, person.reservation_time.astimezone('Asia/Taipei').strftime('%H:%M'))
                             reply_text += '共 {} 人\n\n'.format(how_many_people)
                         line_bot_api.reply_message(
                             event.reply_token,
@@ -318,7 +316,7 @@ def callback(request):
                             alt_text='確認是否刪除',
                             template=ConfirmTemplate(
                                 title='確認是否刪除',
-                                text='確定要刪除在\n{}\n{}\n的預約嗎？'.format(target_location.location, target_location.reservation_time.strftime('%Y-%m-%d %H:%M', time.localtime())),
+                                text='確定要刪除在\n{}\n{}\n的預約嗎？'.format(target_location.location, target_location.reservation_time.astimezone('Asia/Taipei').strftime('%Y-%m-%d %H:%M')),
                                 actions=[                              
                                     PostbackTemplateAction(
                                         label='是',
