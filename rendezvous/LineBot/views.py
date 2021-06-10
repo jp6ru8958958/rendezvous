@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbid
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 
-from LineBot.models import Reservation, Location, User, Message, Report
+from LineBot.models import Reservation, Location, User, Announcement, Report
 
 from linebot import LineBotApi, WebhookParser
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
@@ -176,7 +176,7 @@ def callback(request):
     
                 # 最新消息
                 elif event.message.text == '最新消息':
-                    msg = Message.objects.filter().order_by('created_at').reverse().first()
+                    msg = Announcement.objects.all().order_by('created_at').reverse().first()
                     line_bot_api.reply_message(
                         event.reply_token,
                         TextSendMessage(text=msg.content)
@@ -223,7 +223,7 @@ def callback(request):
                         TextSendMessage(text='遇到了什麼問題嗎?\n麻煩跟我說')
                     )
                 elif event.message.text == '查看開發團隊':
-                    msg = Message.objects.filter().order_by('created_at').first()
+                    msg = Announcement.objects.all().order_by('created_at').first()
                     line_bot_api.reply_message(
                         event.reply_token,
                         TextSendMessage(text=msg.content)

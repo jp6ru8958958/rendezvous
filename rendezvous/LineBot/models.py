@@ -19,7 +19,7 @@ class User(models.Model):
     real_name = models.CharField(max_length=40)
     operation_status = models.CharField(max_length=50, default='Normal')
 
-class Message(models.Model):
+class Announcement(models.Model):
     author = models.CharField(max_length=40)
     content = models.TextField(null=False)
     created_at = models.DateTimeField(auto_now_add=True)
