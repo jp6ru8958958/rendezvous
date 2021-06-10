@@ -1,1 +1,1 @@
-web: gunicorn rendezvous/rendezvous.wsgi
+web: gunicorn --pythonpath rendezvous rendezvous.wsgi --log-file -
