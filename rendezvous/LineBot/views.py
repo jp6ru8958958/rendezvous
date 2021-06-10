@@ -112,7 +112,7 @@ def callback(request):
                     user.save()
                 elif event.message.text == '查看所有預約':
                     reply_columns = []
-                    for reservation in Reservation.objects.filter(line_user_id=user.line_user_id):
+                    for reservation in Reservation.objects.filter(line_user_id=user.line_user_id).order_by('reservation_time'):
                         if len(reply_columns) == 5:
                             break
                         reserv_location = Location.objects.filter(name=reservation.location)[0]
