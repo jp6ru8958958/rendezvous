@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+
 
 LINE_CHANNEL_ACCESS_TOKEN = 'rR8LqeozSDRtPMGySN1iLWqJVjaWd3n7BLWGctpqVZubyI53Aw0Pyt3naNP0YC0THV84+HlBcwcRVM3kIDZE3uML9cG92dgam+J01br7GrlLYQWUG7QTi46MXmAAR3WdOKF5XRJZf3aAn9ILBvuSeQdB04t89/1O/w1cDnyilFU='
 LINE_CHANNEL_SECRET = 'd6b5c8baf1c6623d6c92360310749ce2'
