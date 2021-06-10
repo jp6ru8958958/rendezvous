@@ -1,1 +1,1 @@
-web: gunicorn rendezvous.wsgi
+web: gunicorn rendezvous/rendezvous/rendezvous.wsgi

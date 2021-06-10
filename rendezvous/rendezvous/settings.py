@@ -28,6 +28,7 @@ SECRET_KEY = 'rendezvouso(x3tn=lnf+$@6s3#py!09a2l+6!@il4i%w2s=tl7)y_1lopib'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
+DEBUG_PROPAGATE_EXCEPTIONS = True
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
