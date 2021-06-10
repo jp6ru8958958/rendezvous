@@ -2,6 +2,8 @@ db.sqlite3
 env/
 venv/
 
+rendezvous/rendezvous/settings.py
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
