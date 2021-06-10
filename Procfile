@@ -1,1 +1,1 @@
-web: gunicorn LineBot.wsgi
+web: gunicorn rendezvous.wsgi

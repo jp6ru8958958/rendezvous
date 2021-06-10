@@ -238,7 +238,7 @@ def callback(request):
                     if postback_data[0] == 'CheckAllReservationInSomeday':
                         date_text = event.postback.params['date']
                         reservation_people = Reservation.objects.filter(reservation_time__year=date_text[0:4], reservation_time__month=date_text[5:7], reservation_time__day=date_text[8:10]).order_by('reservation_time')
-                        reply_text = '預約清單\n\n{}\n\n'.format(date_text)
+                        reply_text = '預約清單\n-----\n{}\n-----\n'.format(date_text)
                         for location in Location.objects.all():
                             reply_text += '{}：\n'.format(location.name)
                             how_many_people = 0
